@@ -5,7 +5,13 @@ Aegis 是一款基於 Java Netty 開發的高性能 Agentic WAF (Web Application
 ## 🌟 核心特色
 
 - **高性能異步架構**: 基於 **Netty** 與 **LMAX Disruptor**，實現 I/O 轉發與資安分析的完全解耦，確保防護邏輯絕不阻塞流量。
-- **AI 智能偵測**: 整合 **Microsoft ONNX Runtime**，支援載入特徵工程後的深度學習模型進行即時威脅判定。
+- **AI 智能偵測 (AI-Driven Threat Intelligence)**: 
+    - 整合 **Microsoft ONNX Runtime**，支援載入深度學習模型進行即時威脅判定。
+    - **特徵化處理 (Feature Engineering)**: 支援將 HTTP Payload 轉換為特徵向量，實現對未知 (Zero-day) 攻擊的預測。
+    - **異步判定機制**: 偵測到高風險行為後，系統會自動聯防，達成秒級 IP 封鎖。
+- **內建 DNS 引擎 (Internal DNS Resolver)**: 
+    - 整合 **Netty DNS Codec**，支援自定義 DNS 記錄與轉發規則。
+    - 支援內部服務發現與負載平衡跳轉，增強對上游服務的控制靈活性。
 - **多維度過濾**:
     - **Aho-Corasick 高速匹配**: 針對 OWASP Top 10 關鍵字進行 O(n) 時間複雜度過濾。
     - **Regex 正則支援**: 精準識別複雜的攻擊模式。
