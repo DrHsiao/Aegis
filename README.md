@@ -38,6 +38,37 @@ java -jar target/aegis-proxy-1.0-SNAPSHOT.jar
 - **Windows**: `watchdog.ps1` (使用 netsh portproxy)
 - **Linux**: `watchdog.sh` (使用 iptables DNAT)
 
+## 🛠️ 實作里程碑 (Implementation Milestones)
+
+本專案從零開始，經歷了以下關鍵開發階段，最終形成完整的高性能防禦體系：
+
+1.  **高效能代理核心與協議兼容**:
+    - 建立基於 **Netty** 的雙向代理通道（Frontend & Backend）。
+    - 實作 **NTLM/Negotiate 連線釘選 (Connection Pinning)**，確保企業級 Windows 認證在代理環境下依然穩定。
+    - 支援 **HTTP/2** 流量處理與特定 Stream 的攻擊阻斷。
+    - 實作 **WebSocket/SignalR** 的協議升級偵測與自動全透傳切換。
+
+2.  **多維度安全規則引擎**:
+    - 實作關鍵字過濾的 **Aho-Corasick** 演算法，實現單次掃描多模式識別。
+    - 整合正規表達式 (Regex) 偵測，支援 Case-Insensitive 的複雜模式攻擊過濾。
+    - 支援 `rules.json` 動態配置規則載入。
+
+3.  **異步 AI 分析與效能優化**:
+    - 引入 **LMAX Disruptor** 環形隊列，將流量數據採集與資安分析完全異步化，實現 Netty 執行緒零阻塞。
+    - 實作 **Microsoft ONNX Runtime** 服務，將 Payload 特徵化後送入深度學習模型進行惡意行為判定。
+
+4.  **自動化攔截與懲罰機制**:
+    - 實作整合 **Guava Cache** 的 IP 黑名單管理器，支援 5 分鐘自動過期懲罰。
+    - 建立 `SecurityHandler` 作為 Pipeline 的第一道防線，當 AI 分數超過閾值即自動封鎖發起源。
+
+5.  **運維與部署自動化**:
+    - 實作標準的 `/health/live` 健康評鑑端點。
+    - 撰寫 Windows 專用安裝輔助腳本 (`install_aux.ps1`)，自動遷移 IIS 佔用的 Port 80。
+    - 實作跨平台的 **Watchdog 監控腳本**：
+        - Windows 版：利用 `netsh interface portproxy` 達成内核級流量撤回。
+        - Linux 版：利用 `iptables DNAT` 實現故障即時跳線。
+    - 提供 **jpackage** 打包指令，生成內含精簡 JRE 的原生 `Aegis-WAF.exe`。
+
 ## 📦 打包為原生執行檔
 專案支援使用 `jpackage` 打包為免安裝的 `.exe` 檔，並內含精簡 JRE：
 ```powershell
