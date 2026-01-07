@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  ssl:
+    enabled: false
+    cert_path: certs/server.pfx
+    cert_password: password
+    cert_type: PKCS12
+
+upstream:
+  host: 127.0.0.1
+  port: 9000
+
+mode: gateway
+max_content_length: 2MB
+
+dns:
+  enabled: true
+  port: 53
+  records:
+    "hr.corp.internal": "192.168.1.100"
+    "erp.corp.internal": "192.168.1.100"

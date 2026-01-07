@@ -1,0 +1,18 @@
+{
+    "keywords": [
+        "onload=",
+        "onerror=",
+        "alert(",
+        "document.cookie",
+        "<script",
+        " union select ",
+        " waitfor delay ",
+        " or 1=1 "
+    ],
+    "regexes": [
+        "(?i)(<script|script:|alert\\(|onerror=|onload=)",
+        "(?i)(union\\s+all\\s+select|select\\s+.*\\s+from|insert\\s+into|delete\\s+from|update\\s+.*\\s+set)",
+        "(?i)(\\.\\./|\\.\\\\|/etc/passwd|/windows/win.ini|c:\\\\boot.ini)",
+        "(?i)(exec\\s+xp_cmdshell|net\\s+user|whoami|ipconfig|ifconfig)"
+    ]
+}
